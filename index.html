@@ -1,3 +1,13 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -48,42 +58,7 @@
     <meta name="msapplication-TileImage" content="images/manifest/icon-144x144.png">
     <meta name="msapplication-TileColor" content="#3f51b5">
     <meta name="msapplication-tap-highlight" content="no">
-    
-    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyAfInNjNCAedriaEZfmLEKDKhTXdqfoSi0",
-            authDomain: "sum-southpoint.firebaseapp.com",
-            databaseURL: "https://sum-southpoint.firebaseio.com",
-            projectId: "sum-southpoint",
-            storageBucket: "sum-southpoint.appspot.com",
-            messagingSenderId: "794865693746"
-        };
-        firebase.initializeApp(config);
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/2.4.1/firebase-ui-auth__es_419.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
-    
-    <script type="text/javascript">
-      // FirebaseUI config.
-      var uiConfig = {
-        'credentialHelper': firebaseui.auth.CredentialHelper.NONE,
-        signInSuccessUrl: 'main.html',
-        signInOptions: [
-          // Leave the lines as is for the providers you want to offer your users.
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        ],
-        tosUrl: 'www.google.com'
-        // Terms of service url.
-      };
 
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
-    </script>
-    
     <script>
       /**
       * [polymer-root-path]
@@ -112,6 +87,11 @@
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
+    <!-- Load your application shell -->
+    <link rel="import" href="src/my-app.html">
+    
+
+
     <!-- Add any global styles for body, document, etc. -->
     <style>
       body {
@@ -124,11 +104,23 @@
     </style>
   </head>
   <body>
-    <h1>Bienvenido a SUM SouthPoint</h1>
-    <div id="firebaseui-auth-container"></div>
+    <div id="container">
+      <h3>SUM SouthPoint Login</h3>
+      <div id="loading">Loading...</div>
+      <div id="loaded" class="hidden">
+        <div id="main">
+            <div id="user-signed-in" class="hidden">
+            <div id="user-signed-out" class="hidden">
+            <div id="firebaseui-spa">
+              <div id="firebaseui-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <my-app></my-app>
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>
-    <!-- Built with love using Polymer Starter Kit -->
   </body>
 </html>

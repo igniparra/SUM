@@ -26,6 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="my-view1.html">
 <link rel="lazy-import" href="my-view2.html">
 <link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="my-view4.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
@@ -84,11 +85,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-        <app-toolbar>Menu</app-toolbar>
+        <app-toolbar><paper-icon-button icon="menu"></paper-icon-button></app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view1" href="[[rootPath]]view1">Ver Disponibilidad</a>
           <a name="view2" href="[[rootPath]]view2">Reservar</a>
           <a name="view3" href="[[rootPath]]view3">Mis Reservas</a>
+          <a name="view4" href="[[rootPath]]view4">Mi Perfil</a>
+          <br><br>
+          <a name="logout" href="[[rootPath]]logout">Salir</a>
         </iron-selector>
       </app-drawer>
 
@@ -110,13 +114,105 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <my-view1 name="view1"></my-view1>
           <my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
+          <my-view4 name="view4"></my-view4>
+          <logout name="logout"></logout>          
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
   </template>
   
-  <script>
+  
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAfInNjNCAedriaEZfmLEKDKhTXdqfoSi0",
+    authDomain: "sum-southpoint.firebaseapp.com",
+    databaseURL: "https://sum-southpoint.firebaseio.com",
+    projectId: "sum-southpoint",
+    storageBucket: "sum-southpoint.appspot.com",
+    messagingSenderId: "794865693746"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script         	  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
+
+<script src="https://www.gstatic.com/firebasejs/ui/2.4.1/firebase-ui-auth__es_419.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/2.4.1/firebase-ui-auth.css" />
+
+
+<script> //Handle FirebaseUI Login
+
+function getUiConfig() {
+  return {
+    'callbacks': {
+      // Called when the user has been successfully signed in.
+      'signInSuccess': function(user, credential, redirectUrl) {
+        handleSignedInUser(user);
+        // Do not redirect.
+        return false;
+      }
+    },
+    'credentialHelper': firebaseui.auth.CredentialHelper.NONE,
+    // Opens IDP Providers sign-in flow in a popup.
+    'signInFlow': 'popup',
+    'signInOptions': [
+      {
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        // Whether the display name should be displayed in Sign Up page.
+        requireDisplayName: true
+      }
+    ],
+    // Terms of service url.
+    'tosUrl': 'https://www.google.com'
+  };
+}
+
+// Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+
+/**
+ * @return {string} The URL of the FirebaseUI standalone widget.
+ */
+function getWidgetUrl() {
+  return '/widget#recaptcha=' + getRecaptchaMode();
+}
+
+
+/**
+ * Displays the UI for a signed in user.
+ * @param {!firebase.User} user
+ */
+var handleSignedInUser = function(user) {
+  document.getElementById('user-signed-in').style.display = 'block';
+  document.getElementById('user-signed-out').style.display = 'none';
+};
+
+
+/**
+ * Displays the UI for a signed out user.
+ */
+var handleSignedOutUser = function() {
+  document.getElementById('user-signed-out').style.display = 'block';
+  ui.start('#firebaseui-container', getUiConfig());
+};
+
+
+
+
+
+/**
+ * Initializes the app.
+*/
+</script> //FIN FirebaseUI Login
+
+  
+<script>
     class MyApp extends Polymer.Element {
       static get is() { return 'my-app'; }
 
@@ -166,7 +262,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = 'view404';
       }
     }
+    
+// Listen to change in auth state so it displays the correct UI for when
+// the user is signed in or not.
 
-    window.customElements.define(MyApp.is, MyApp);
+    firebase.auth().onAuthStateChanged(function(user) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('loaded').style.display = 'block';
+        user ? handleSignedInUser(user) : handleSignedOutUser();
+        if (user){
+            var displayName = user.displayName;
+            window.customElements.define(MyApp.is, MyApp);
+        };
+    });
+    
+
+    
   </script>
+  
 </dom-module>
+
+
