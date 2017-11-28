@@ -21,23 +21,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <firebase-query
+        id="userData"
+        app-name="myApp"
+        path="users/[[userId]]/name"
+        data="{{data}}">
+    </firebase-query>  
+    
     <div class="card">
         <paper-item>
             <paper-item-body two-line>
                 <div>Usuario</div>
-                <div secondary id="username"></div>
+                <div secondary>{{username}}</div>
             </paper-item-body>
         </paper-item>
         <paper-item>
             <paper-item-body two-line>
                 <div>Unidad Funcional</div>
-                <div secondary id="uf"></div>
+                <div secondary>{{uf}}</div>
             </paper-item-body>
         </paper-item>
         <paper-item>
             <paper-item-body two-line>
                 <div>Cr&eacute;ditos</div>
-                <div secondary id="credits"></div>
+                <div secondary>{{credits}}</div>
             </paper-item-body>
         </paper-item>
     </div>
@@ -51,17 +58,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     window.customElements.define(MyView4.is, MyView4);
 </script>
 
-<script type="text/javascript"
-src="https://code.jquery.com/jquery-3.2.1.js"
-integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-crossorigin="anonymous"
-></script>
+<script>
+    class activeUser extends Polymer.Element{
+        static get is(){ return 'active-user';}
+        static get properties(){
+            return{
+                username:String,
+                uf:String,
+                credits:Number
+            }
+        }
+        constructor() {
+            super();
+        }
+        update(a, b, c){
+            this.username=a;
+            this.uf=b;
+            this.credits=c;
+            console.log("Update success")
+            console.log("Username"+this.username)
+        }
+    }
+    customElements.define(activeUser.is, activeUser);
+</script>
   
 <script type="text/javascript">
-    var database = firebase.database();
     var userId = firebase.auth().currentUser.uid;
-    //var name = firebase.database().ref('users/' + userId + '/name');
     
+    Polymer({
+        is: 'read-database',
+        properties: {
+            uid: String,
+            data: {
+              type: Object,
+              observer: 'dataChanged'
+            }
+        },
+
+        dataChanged: function (newData, oldData) {
+            var newUser = this.get([newData,name]);
+            var newUf = this.get([newData,uf]);
+            var newCredits = this.get([newData,credits]);
+            activeuser = new activeUser();
+            activeuser.update(newUser,newUf,newCredits);
+        }
+    });
+
+    
+/*    
     jQuery(function($){
     
         var name = firebase.database().ref('Users/' + userId + '/name');
@@ -69,7 +113,7 @@ crossorigin="anonymous"
             $("username").html(snapshot.val());
             //this.$.username.innerHTML=snapshot.val();
         });
-        /*
+
         var uf = firebase.database().ref('Users/' + userId + '/uf');
         uf.on('value', function(snapshot) {
             this.$.uf.innerHTML=snapshot.val();
@@ -79,8 +123,8 @@ crossorigin="anonymous"
         credits.on('value', function(snapshot) {
             this.$.credits.innerHTML=snapshot.val();
         });
-        */
+        
     });
-
+*/
 </script>
 </dom-module>
