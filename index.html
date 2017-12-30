@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>SouthPoint SUM</title>
-    <meta name="description" content="My App description">
+    <meta name="description" content="Sistema de reserva de SUM">
 
     <!--
       The `<base>` tag below is present to support two advanced deployment options:
@@ -40,12 +40,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My App">
+    <meta name="application-name" content="SUM Southpoint">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My App">
+    <meta name="apple-mobile-web-app-title" content="SUM Southpoint">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="images/manifest/icon-48x48.png">
@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Load your application shell -->
     <link rel="import" href="src/my-app.html">
-    
+
 
 
     <!-- Add any global styles for body, document, etc. -->
@@ -105,20 +105,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body>
     <div id="container">
-      <h3>SUM SouthPoint Login</h3>
-      <div id="loading">Loading...</div>
-      <div id="loaded" class="hidden">
-        <div id="main">
-            <div id="user-signed-in" class="hidden">
-            <div id="user-signed-out" class="hidden">
-            <div id="firebaseui-spa">
-              <div id="firebaseui-container"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div id="loading">Loading...</div>
+        <div id="loaded" class="hidden"></div>
+        <my-app></my-app>
     </div>
-    <my-app></my-app>
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>

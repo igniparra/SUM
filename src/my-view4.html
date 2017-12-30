@@ -9,8 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/firebase/firebase-database.js">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 
+<link rel="import" href="shared-styles.html">
 <dom-module id="my-view4">
   <template>
     <style include="shared-styles">
@@ -20,111 +25,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
-
+    <firebase-auth user={{user}}></firebase-auth>
+    <p>The logged user is [[user.uid]]</p>
     <firebase-query
-        id="userData"
-        app-name="myApp"
-        path="users/[[userId]]/name"
-        data="{{data}}">
-    </firebase-query>  
+        id="query"
+        path="/users/pIXHunu38LYDJlzYaZuoxO2ZOOY2"
+        data="{{userData}}">
+    </firebase-query>
     
     <div class="card">
         <paper-item>
             <paper-item-body two-line>
                 <div>Usuario</div>
-                <div secondary>{{username}}</div>
+                <div secondary>[[userData.name]]</div>
             </paper-item-body>
         </paper-item>
         <paper-item>
             <paper-item-body two-line>
                 <div>Unidad Funcional</div>
-                <div secondary>{{uf}}</div>
+                <div secondary>[[userData.uf]]</div>
             </paper-item-body>
         </paper-item>
         <paper-item>
             <paper-item-body two-line>
                 <div>Cr&eacute;ditos</div>
-                <div secondary>{{credits}}</div>
+                <div secondary>[[userData.credits]]</div>
             </paper-item-body>
         </paper-item>
     </div>
   </template>
-
+    
 <script>
     class MyView4 extends Polymer.Element {
-      static get is() { return 'my-view4'; }
-    }
-    
-    window.customElements.define(MyView4.is, MyView4);
-</script>
-
-<script>
-    class activeUser extends Polymer.Element{
-        static get is(){ return 'active-user';}
+        static get is() { return 'my-view4'; }
         static get properties(){
             return{
-                username:String,
-                uf:String,
-                credits:Number
+                userData: Object
             }
-        }
-        constructor() {
-            super();
-        }
-        update(a, b, c){
-            this.username=a;
-            this.uf=b;
-            this.credits=c;
-            console.log("Update success")
-            console.log("Username"+this.username)
         }
     }
-    customElements.define(activeUser.is, activeUser);
-</script>
-  
-<script type="text/javascript">
-    var userId = firebase.auth().currentUser.uid;
-    
-    Polymer({
-        is: 'read-database',
-        properties: {
-            uid: String,
-            data: {
-              type: Object,
-              observer: 'dataChanged'
-            }
-        },
-
-        dataChanged: function (newData, oldData) {
-            var newUser = this.get([newData,name]);
-            var newUf = this.get([newData,uf]);
-            var newCredits = this.get([newData,credits]);
-            activeuser = new activeUser();
-            activeuser.update(newUser,newUf,newCredits);
-        }
-    });
-
-    
-/*    
-    jQuery(function($){
-    
-        var name = firebase.database().ref('Users/' + userId + '/name');
-        name.on('value', function(snapshot) {
-            $("username").html(snapshot.val());
-            //this.$.username.innerHTML=snapshot.val();
-        });
-
-        var uf = firebase.database().ref('Users/' + userId + '/uf');
-        uf.on('value', function(snapshot) {
-            this.$.uf.innerHTML=snapshot.val();
-        });
-        
-        var credits = firebase.database().ref('Users/' + userId + '/credits');
-        credits.on('value', function(snapshot) {
-            this.$.credits.innerHTML=snapshot.val();
-        });
-        
-    });
-*/
+    window.customElements.define(MyView4.is, MyView4);
 </script>
 </dom-module>
