@@ -16,7 +16,6 @@
     <style include="shared-styles">
           :host {
             display: block;
-
             padding: 10px;
           }
         paper-button.ok{
@@ -41,8 +40,8 @@
     <div class="card">
         <paper-input autofocus required label="Correo Electr&oacute;nico" type="email" value="{{email}}"></paper-input>
         <paper-input required label="Contrase&ntilde;a" type="password" value="{{pass}}"></paper-input>
-        <paper-button raised style="ok" on-tap="login([[email]],[[pass]])">Ingresar</paper-button> 
-        <paper-button raised style="cancel" on-tap="dialog.open()">Olvidaste tu contrase&ntilde;a?</paper-button>
+        <paper-button raised style="ok" on-tap="login">Ingresar</paper-button> 
+        <paper-button raised style="cancel" on-tap="dialog.open">Olvidaste tu contrase&ntilde;a?</paper-button>
     </div>
   </template>
     
@@ -56,10 +55,10 @@
                 forgotten: String
             }
         }
-        login(email,pass){
-            console.log(email);
-            console.log(pass);
-            return this.$.auth.signInWithEmailAndPassword(email, pass)
+        login(){
+            console.log(this.$.email);
+            console.log(this.$.pass);
+            return this.$.auth.signInWithEmailAndPassword(this.$.email, this.$.pass)
         }
         resetPass(){
             return this.$.auth.sendPasswordResetEmail("forgotten")
