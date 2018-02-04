@@ -57,13 +57,15 @@ export default class SumApp extends PolymerElement {
 
       <app-header-layout fullbleed>
 
-        <app-header slot="header" fixed condenses effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="menu"></paper-icon-button>
-            <div spacer main-title>SUM</div>
-          </app-toolbar>
-        </app-header>
-        {{user.email}}
+        <template is="dom-if" if="[[user]]">
+          <app-header slot="header" fixed condenses effects="waterfall">
+            <app-toolbar>
+              <paper-icon-button icon="menu"></paper-icon-button>
+              <div spacer main-title>SUM</div>
+            </app-toolbar>
+          </app-header>
+        </template>
+
         <div>
           <app-location route="{{route}}"></app-location>
           <app-route
