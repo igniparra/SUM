@@ -1,7 +1,7 @@
 {
-  "name": "My App",
-  "short_name": "My App",
-  "description": "My App description",
+  "name": "SouthPoint SUM",
+  "short_name": "SUM",
+  "description": "Sistema de reserva de SUM",
   "icons": [
     {
       "src": "images/manifest/icon-192x192.png",
