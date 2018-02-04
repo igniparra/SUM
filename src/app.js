@@ -30,6 +30,9 @@ export default class SumApp extends PolymerElement {
   }
 
   _routePageChanged(page) {
+    if (!this.user) {
+      this.set('route.path', '/login');
+    }
     this.page = page || 'home';
   }
 
