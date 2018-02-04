@@ -7,6 +7,10 @@ import '../node_modules/@polymer/paper-input/paper-input.js';
 export default class Login extends PolymerElement {
   static get properties() {
     return {
+      router: {
+        type: Object,
+        notify: true,
+      },
       user: {
         type: Object,
         notify: true,
@@ -68,6 +72,7 @@ export default class Login extends PolymerElement {
   login() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
       this.user = user;
+      this.set('router.path', '/');
     });
   }
 }

@@ -76,7 +76,7 @@ export default class SumApp extends PolymerElement {
 
           <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
             <sum-home route="[[subroute]]" name="home"></sum-home>
-            <sum-login route="[[subroute]]" name="login" user="{{user}}"></sum-login>
+            <sum-login route="[[subroute]]" router="{{route}}" name="login" user="{{user}}"></sum-login>
             <sum-availability route="[[subroute]]" name="ver-disponibilidad"></sum-availability>
             <sum-booking route="[[subroute]]" name="reservar"></sum-booking>
             <sum-user-profile route="[[subroute]]" name="mi-perfil"></sum-user-profile>
