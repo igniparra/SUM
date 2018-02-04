@@ -63,7 +63,7 @@ export default class SumApp extends PolymerElement {
             <div spacer main-title>SUM</div>
           </app-toolbar>
         </app-header>
-
+        {{user.email}}
         <div>
           <app-location route="{{route}}"></app-location>
           <app-route

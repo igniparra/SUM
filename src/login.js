@@ -9,7 +9,7 @@ export default class Login extends PolymerElement {
     return {
       user: {
         type: Object,
-        reflectToAttribute: true,
+        notify: true,
       },
       email: String,
       password: String,
