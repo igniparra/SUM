@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+
+
+
+
+<link rel="import" href="shared-styles.html">
+<dom-module id="my-login">
+  <template>
+    <style include="shared-styles">
+          :host {
+            display: block;
+            padding: 10px;
+          }
+        paper-button.ok{
+            background: green;
+            color: white;
+        }
+        paper-button.cancel{
+            background: red;
+            color: black;
+        }
+    </style>
+    <firebase-auth id="auth" user="{{user}}"></firebase-auth>
+    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+        <h2>Desea reiniciar su contraseña?</h2>
+        <paper-input required="" label="Correo Electrónico" type="email" value="{{forgotten}}"></paper-input>
+        <paper-button raised="" style="ok" label="Enviar" on-tap="resetPass()"></paper-button> 
+        <paper-button raised="" style="cancel" label="Cancelar" on-tap="dialog.close()"></paper-button>
+    </paper-dialog>
+    <div class="card">
+        <paper-input autofocus="" required="" label="Correo Electrónico" type="email" value="{{email}}"></paper-input>
+        <paper-input required="" label="Contraseña" type="password" value="{{pass}}"></paper-input>
+        <paper-button raised="" style="ok" on-tap="login">Ingresar</paper-button> 
+        <paper-button raised="" style="cancel" on-tap="dialog.open">Olvidaste tu contraseña?</paper-button>
+    </div>
+  </template>
+    
+<script>
+    class myLogin extends Polymer.Element {
+        static get is() { return 'my-login'; }
+        static get properties(){
+            return{
+                email: String,
+                pass: String,
+                forgotten: String
+            }
+        }
+        login(){
+            console.log(this.$.email);
+            console.log(this.$.pass);
+            return this.$.auth.signInWithEmailAndPassword(this.$.email, this.$.pass)
+        }
+        resetPass(){
+            return this.$.auth.sendPasswordResetEmail("forgotten")
+        }
+    }
+    window.customElements.define(myLogin.is, myLogin);
+</script>
+</dom-module>
