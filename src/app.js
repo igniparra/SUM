@@ -5,6 +5,7 @@ import '../node_modules/@polymer/app-layout/app-header/app-header.js';
 import '../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../node_modules/@polymer/iron-icons/iron-icons.js';
 import '../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../node_modules/@polymer/paper-item/paper-item.js';
 import '../node_modules/@polymer/paper-styles/color.js';
 import '../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
@@ -39,13 +40,19 @@ export default class SumApp extends PolymerElement {
     this.page = page || 'home';
   }
 
+  _pageChanged(page) {
+    // Load page import on demand. Show 404 page if fails
+    var resolvedPageUrl = this.resolveUrl(+ page +'.js');
+    Polymer.importHref(resolvedPageUrl,null,null,true);
+  }
+
   static get observers() {
     return ['_routePageChanged(routeData.page)'];
   }
 
   static get template() {
     return html`
-      <style include="typography">
+      <style>
         :host {
           @apply --paper-font-common-base;
         }
@@ -59,55 +66,58 @@ export default class SumApp extends PolymerElement {
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
         }
+        app-drawer-layout:not([narrow]) [drawer-toggle] {
+          display: none;
+        }
       </style>
+
+      <div>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-route
+          route="{{route}}"
+          pattern="/:page"
+          data="{{routeData}}"
+          tail="{{subroute}}">
+        </app-route>
+      </div>
 
 
  <app-drawer-layout responsive-width="1280px">
-    <template is="dom-if" if="[[user]]">
+ <template is="dom-if" if="[[user]]">
         <app-drawer swipe-open slot="drawer">
           <app-toolbar>Menú</app-toolbar>
-          <iron-selector
-              class="drawer-list"
-              selected="[[page]]"
-              attr-for-selected="name">
-              <paper-button><a name="ver-disponibilidad" href="/availability">Ver Disponibilidad</a></paper-button><br>
-              <paper-button><a name="reservar" href="/booking">Reservar</a></paper-button><br>
-              <paper-button><a name="mi-perfil" href="/profile">Mi Perfil</a></paper-button><br>
-              <paper-button><a name="mis-reservas" href="/bookings">Mis Reservas</a></paper-button><br>
+          <iron-selector class="drawer-list" selected="[[page]]" attr-for-selected="name" role="navigation">
+              <paper-item><a name="ver-disponibilidad" href="#/availability">Ver Disponibilidad</a></paper-item><br>
+              <paper-item><a name="reservar" href="#/booking">Reservar</a></paper-item><br>
+              <paper-item><a name="mi-perfil" href="#/profile">Mi Perfil</a></paper-item><br>
+              <paper-item><a name="mis-reservas" href="#/bookings">Mis Reservas</a></paper-item><br>
           </iron-selector>
         </app-drawer>
 
         <app-header-layout fullbleed>
+
           <app-header slot="header" condenses effects="waterfall">
-            <app-toolbar>
-              <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-              <div spacer main-title>SUM</div>
-              <paper-icon-button icon="exit-to-app" on-tap="logout">Salir</paper-button>
-            </app-toolbar>
-        </app-header>
-    </template>
+              <app-toolbar>
+                <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+                <div spacer main-title>SUM</div>
+                <paper-icon-button icon="exit-to-app" on-tap="logout">Salir</paper-button>
+              </app-toolbar>
+            </app-header>
 
-        <div>
-          <app-location route="{{route}}"></app-location>
-          <app-route
-            route="{{route}}"
-            pattern="/:page"
-            data="{{routeData}}"
-            tail="{{subroute}}"></app-route>
-        </div>
+  </template>
 
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
-          <sum-home route="[[subroute]]" name="home"></sum-home>
-          <sum-login route="[[subroute]]" router="{{route}}" name="login" user="{{user}}"></sum-login>
-          <sum-availability route="[[subroute]]" name="ver-disponibilidad"></sum-availability>
-          <sum-booking route="[[subroute]]" name="reservar"></sum-booking>
-          <sum-user-profile route="[[subroute]]" name="mi-perfil"></sum-user-profile>
-          <sum-user-bookings route="[[subroute]]" name="mis-reservas"></sum-user-bookings>
-        </iron-pages>     
-         
+          <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
+            <sum-home route="[[subroute]]" name="home"></sum-home>
+            <sum-login route="[[subroute]]" router="{{route}}" name="login" user="{{user}}"></sum-login>
+            <sum-availability route="[[subroute]]" name="ver-disponibilidad"></sum-availability>
+            <sum-booking route="[[subroute]]" name="reservar"></sum-booking>
+            <sum-user-profile route="[[subroute]]" name="mi-perfil"></sum-user-profile>
+            <sum-user-bookings route="[[subroute]]" name="mis-reservas"></sum-user-bookings>
+          </iron-pages>
+
       </app-header-layout>
  </app-drawer-layout>
- 
+
     `;
   }
   logout () {
@@ -117,7 +127,7 @@ export default class SumApp extends PolymerElement {
       console.error('Sign Out Error', error);
     });
     this.user=null;
-    this.set('route.path', '/login');
+    this.set('route.path', '#/login');
   }
 }
 

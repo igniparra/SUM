@@ -327,6 +327,15 @@
     "@polymer/paper-styles" "^3.0.0-pre.7"
     "@polymer/polymer" "^3.0.0-pre.7"
 
+"@polymer/paper-item@^3.0.0-pre.8":
+  version "3.0.0-pre.8"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-item/-/paper-item-3.0.0-pre.8.tgz#42e494bf8f8ffbc1eb77422e8560d397b9262ee8"
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.7"
+    "@polymer/iron-flex-layout" "^3.0.0-pre.7"
+    "@polymer/paper-styles" "^3.0.0-pre.7"
+    "@polymer/polymer" "^3.0.0-pre.7"
+
 "@polymer/paper-ripple@^3.0.0-pre.7":
   version "3.0.0-pre.7"
   resolved "https://registry.yarnpkg.com/@polymer/paper-ripple/-/paper-ripple-3.0.0-pre.7.tgz#8ea300282dc78c5a1f7c00e3d683deec76f3ce85"

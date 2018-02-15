@@ -25,7 +25,7 @@ export default class SumHeader extends PolymerElement {
 
       <app-header condenses reveals fixed>
         <app-toolbar>
-          <paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button>
+          <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
           <div spacer main-title>SUM</div>
         </app-toolbar>
       </app-header>
