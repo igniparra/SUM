@@ -38,6 +38,7 @@ export default class SumApp extends PolymerElement {
       this.set('route.path', '/login');
     };
     this.page = page || 'home';
+    console.log(firebase.auth().currentUser.email);
   }
 
 
