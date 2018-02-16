@@ -36,15 +36,10 @@ export default class SumApp extends PolymerElement {
   _routePageChanged(page) {
     if (!this.user) {
       this.set('route.path', '/login');
-    }
+    };
     this.page = page || 'home';
   }
 
-  _pageChanged(page) {
-    // Load page import on demand. Show 404 page if fails
-    var resolvedPageUrl = this.resolveUrl(+ page +'.js');
-    Polymer.importHref(resolvedPageUrl,null,null,true);
-  }
 
   static get observers() {
     return ['_routePageChanged(routeData.page)'];
@@ -72,7 +67,7 @@ export default class SumApp extends PolymerElement {
       </style>
 
       <div>
-        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-location route="{{route}}"></app-location>
         <app-route
           route="{{route}}"
           pattern="/:page"
@@ -87,10 +82,10 @@ export default class SumApp extends PolymerElement {
         <app-drawer swipe-open slot="drawer">
           <app-toolbar>Menú</app-toolbar>
           <iron-selector class="drawer-list" selected="[[page]]" attr-for-selected="name" role="navigation">
-              <paper-item><a name="ver-disponibilidad" href="#/availability">Ver Disponibilidad</a></paper-item><br>
-              <paper-item><a name="reservar" href="#/booking">Reservar</a></paper-item><br>
-              <paper-item><a name="mi-perfil" href="#/profile">Mi Perfil</a></paper-item><br>
-              <paper-item><a name="mis-reservas" href="#/bookings">Mis Reservas</a></paper-item><br>
+              <paper-item><a name="ver-disponibilidad" href="/availability">Ver Disponibilidad</a></paper-item><br>
+              <paper-item><a name="reservar" href="/booking">Reservar</a></paper-item><br>
+              <paper-item><a name="mi-perfil" href="/profile">Mi Perfil</a></paper-item><br>
+              <paper-item><a name="mis-reservas" href="/bookings">Mis Reservas</a></paper-item><br>
           </iron-selector>
         </app-drawer>
 
@@ -127,7 +122,7 @@ export default class SumApp extends PolymerElement {
       console.error('Sign Out Error', error);
     });
     this.user=null;
-    this.set('route.path', '#/login');
+    this.set('route.path', '/login');
   }
 }
 
